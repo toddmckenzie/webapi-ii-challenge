@@ -12,6 +12,6 @@ server.get('/', (req,res) => {
     )
 });
 
-server.use('api/posts', postsRouter);
+server.use('/api/posts', postsRouter);
 
 module.exports = server; 

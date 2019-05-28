@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
         res.status(200).json(posts)
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error retrieving the posts.'})
+        res.status(500).json({ message: "The posts information could not be retrieved."})
     }
 })
 
@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error retrieving the posts'})
+        res.status(500).json({ message: "The post with the specified ID does not exist."})
     }
 })
 
