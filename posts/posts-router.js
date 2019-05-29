@@ -56,21 +56,21 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: "There was an error while saving the post to the database" })
     }
 })
-//come back to this one.  at top of readme.
+//working
 router.post('/:id/comments', async (req, res) => {
     console.log(req.body)
     console.log(req.params.id)
     try {
-        const idFound = await findById(req.params.id);
-        const { text } = req.body
-        const post = await Posts.insertComment(text)
-        if (!idFound) {
-            res.status(404).json({ message: "The post with the specified ID does not exist."})
-        } else if (!text) {
-            res.status(400).json({ message: "Please provide text for the comment" })
+       // const idFound = await findById(req.params.id);
+        let comment = { "text": req.body.text, "post_id": req.params.id }
+        const post = await Posts.insertComment(comment)
+        if (comment.text.length === 0) {
+            res.status(400).json("Please provide text for the comment.")
         } else {
             res.status(201).json(post)
         }
+        
+      
 
     } catch (error) {
         res.status(500).json({ message: "There was an error saving the comment to the database"})
