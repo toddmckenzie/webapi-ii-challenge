@@ -15,10 +15,7 @@ router.get('/', async (req, res) => {
 //working
 router.get('/:id', async (req, res) => {
     try {
-
-        console.log(req.params.id)
         const postsById = await Posts.findById(req.params.id)
-        console.log(` here is posts by id ${postsById}`)
         if (postsById.length > 0) {
             console.log(postsById)
             res.status(200).json(postsById)
@@ -61,20 +58,21 @@ router.post('/', async (req, res) => {
 })
 //come back to this one.  at top of readme.
 router.post('/:id/comments', async (req, res) => {
+    console.log(req.body)
+    console.log(req.params.id)
     try {
-        const id = req.params.id;
-        //const commentsById = await Posts.findPostComments(req.params.id)
-        console.log(id)
+        const idFound = await findById(req.params.id);
         const { text } = req.body
-        if (!id) {
+        const post = await Posts.insertComment(text)
+        if (!idFound) {
             res.status(404).json({ message: "The post with the specified ID does not exist."})
         } else if (!text) {
-            res.status(400).json({ message: "Please provide text for the comment"})
+            res.status(400).json({ message: "Please provide text for the comment" })
         } else {
-            res.status(201).json(req.body)
+            res.status(201).json(post)
         }
 
-    }catch (error) {
+    } catch (error) {
         res.status(500).json({ message: "There was an error saving the comment to the database"})
     }
 })
@@ -90,7 +88,9 @@ router.delete('/:id', async (req, res) => {
             res.status(404).json({ message: "The post with the specified ID does not exist."})
         }
     } catch (error) {
-        res.status(500).json({ message: "The post could not be removed."})
+        res.status(500).json({ message: "The post could not be removed."}
+        )
+
     }
 })
 //working
@@ -100,7 +100,7 @@ router.put('/:id', async (req, res) => {
         const { title, contents } = req.body;
         const post = await Posts.update(id, req.body);
         if (!title || !contents) {
-            res.status(404).json({ message: "Please provide title and contents for the post." })
+            res.status(404).json({ message: "Please provide title and content for the post." })
         } else {
             res.status(200).json(req.body)
         }
