@@ -61,7 +61,6 @@ router.post('/:id/comments', async (req, res) => {
     console.log(req.body)
     console.log(req.params.id)
     try {
-       // const idFound = await findById(req.params.id);
         let comment = { "text": req.body.text, "post_id": req.params.id }
         const post = await Posts.insertComment(comment)
         if (comment.text.length === 0) {
@@ -69,9 +68,6 @@ router.post('/:id/comments', async (req, res) => {
         } else {
             res.status(201).json(post)
         }
-        
-      
-
     } catch (error) {
         res.status(500).json({ message: "There was an error saving the comment to the database"})
     }
